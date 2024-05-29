@@ -1,9 +1,11 @@
-// Classe Bus
 import java.util.Scanner;
+
+import org.jetbrains.annotations.NotNull;
 import src.Exceptions;
 
 
 public class Bus {
+
     private Chauffeur chauffeur;
     private Trajet trajet;
 
@@ -14,10 +16,10 @@ public class Bus {
     private String couleur;
 
     // Constructeur
-    public Bus(String numImmatriculation, double capaciteReservoir, int passengerCount, String couleur) {
+    public Bus(String numImmatriculation, double capaciteReservoir, int nbrPassager, String couleur) {
         this.numImmatriculation = numImmatriculation;
         this.capaciteReservoir = capaciteReservoir;
-        this.nbrPassager = passengerCount;
+        this.nbrPassager = nbrPassager;
         this.couleur = couleur;
     }
 
@@ -49,7 +51,6 @@ public class Bus {
         return this.chauffeur;
     }
 
-    // Méthode pour afficher les caractéristiques du bus
     public void affichageCarachteristique() {
         System.out.println("\033[32m" + "==> Numero d'immatriculation : " + numImmatriculation + "\033[0m");
         System.out.println("\033[32m" + "==> Capacité du Reservoir : " + capaciteReservoir + "\033[0m");
@@ -57,12 +58,11 @@ public class Bus {
         System.out.println("\033[32m" + "==> Couleur : " + couleur + "\033[0m");
     }
 
-    public static Bus creationBus(Scanner scanner, Bus[] buses) throws Exceptions.InvalidBusNumberException {
+    public static @NotNull Bus creationBus(@NotNull Scanner scanner, Bus[] buses) throws Exceptions.InvalidBusNumberException {
         System.out.println("Entrez les informations pour la réservation d’un bus :");
         System.out.print("Numéro d'immatriculation du bus : ");
         String busNumber = scanner.nextLine();
 
-        // validation de l'immatriculation
         if (!busNumber.matches("[A-Za-z0-9]{6}")) {
             System.out.println("Le numéro d'immatriculation n'est pas valide ! ");
             throw new Exceptions.InvalidBusNumberException("Format invalide : " + busNumber + " - Veuiller entrer un numéro d'immatriculation de 6 charactères.");
@@ -80,15 +80,9 @@ public class Bus {
             System.out.println("\033[31m" + "Aucun bus trouvé avec ce numéro d'immatriculation." + "\033[0m");
             System.out.println("\033[32m" + "Création d'un nouveau bus." + "\033[0m");
 
-            System.out.print("Capacité du réservoir : ");
-            double tankCapacity = scanner.nextDouble();
-
-            System.out.print("Nombre de passagers : ");
-            int passengerCount = scanner.nextInt();
-            scanner.nextLine();
-
-            System.out.print("Couleur : ");
-            String color = scanner.nextLine();
+            double tankCapacity = validateTankCapacity(scanner);
+            int passengerCount = validatePassengerCount(scanner);
+            String color = validateColor(scanner);
 
             busForReservation = new Bus(busNumber, tankCapacity, passengerCount, color);
 
@@ -104,8 +98,66 @@ public class Bus {
         return busForReservation;
     }
 
+    public static double validateTankCapacity(@NotNull Scanner scanner) {
+
+            double tankCapacity = 0;
+            while (true) {
+                try {
+                    System.out.print("Capacité du réservoir : ");
+                    String input = scanner.nextLine();
+                    tankCapacity = Double.parseDouble(input);
+                    if (tankCapacity <= 0) {
+                        throw new Exceptions.InvalidCapacityException("Erreur : La capacité du réservoir doit être un chiffre positif.");
+                    }
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("\033[31mErreur : Veuillez entrer un chiffre pour la capacité du réservoir en Litre.\033[0m");
+                } catch (Exceptions.InvalidCapacityException e) {
+                    System.out.println("\033[31m" + e.getMessage() + "\033[0m");
+                }
+            }
+            return tankCapacity;
+    }
+
+    public static int validatePassengerCount(@org.jetbrains.annotations.NotNull Scanner scanner) {
+        int passengerCount = 0;
+        while (true) {
+            System.out.print("Nombre de passagers : ");
+            try {
+                String input = scanner.nextLine().trim();
+                passengerCount = Integer.parseInt(input);
+                if (passengerCount <= 0) {
+                    throw new Exceptions.InvalidPassengerCountException("Erreur : Le nombre de passagers doit être un entier positif.");
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("\033[31mErreur : Veuillez entrer un entier pour le nombre de passagers.\033[0m");
+            } catch (Exceptions.InvalidPassengerCountException e) {
+                System.out.println("\033[31m" + e.getMessage() + "\033[0m");
+            }
+        }
+        return passengerCount;
+    }
+
+    public static String validateColor(@NotNull Scanner scanner){
+        String color = "";
+        while (true) {
+            System.out.print("Couleur : ");
+            try {
+                color = scanner.nextLine().trim();
+                if (!color.matches("^[a-zA-Z]*$")) {
+                    throw new Exceptions.InvalidColorException("Erreur : Veuillez entrer une couleur en lettres uniquement.");
+                }
+                break;
+            } catch (Exceptions.InvalidColorException e) {
+                System.out.println("\033[31m" + e.getMessage() + "\033[0m");
+            }
+        }
+        return color;
+    }
+
     public static Bus createBusWithValidation(Scanner scanner, Bus[] buses) {
-        Bus reservationBus;
+        Bus reservationBus = null;
         while (true) {
             try {
                 reservationBus = Bus.creationBus(scanner, buses);
