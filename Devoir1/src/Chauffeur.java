@@ -62,7 +62,8 @@ public class Chauffeur {
         }
 
         if (chauffeurForReservation == null) {
-            System.out.println("Aucun chauffeur trouvé avec ce nom. Création d'un nouveau chauffeur.");
+            System.out.println("\033[31m" + "Aucun chauffeur trouvé avec ce nom." + "\033[0m");
+            System.out.println("\033[32m" + "Création d'un nouveau Chauffeur." + "\033[0m");
             System.out.print("Prénom : ");
             String firstName = scanner.nextLine();
             System.out.print("Âge : ");
