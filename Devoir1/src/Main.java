@@ -1,5 +1,5 @@
-import src.Exceptions.InvalidInputException;
-import src.Exceptions.NoTrajetFoundException;
+import src.Exceptions.InputInvalideException;
+import src.Exceptions.TrajetIntrouvableException;
 import java.util.Scanner;
 
 public class Main {
@@ -25,11 +25,11 @@ public class Main {
 
                 while (!scanner.hasNextInt()) {
                     scanner.next();
-                    throw new InvalidInputException("Erreur : Veuillez entrer un chiffre entre 1 et 4.");
+                    throw new InputInvalideException("Erreur : Veuillez entrer un chiffre entre 1 et 4.");
                 }
                 option = scanner.nextInt();
 
-            } catch (InvalidInputException e) {
+            } catch (InputInvalideException e) {
                 System.out.println(e.getMessage());
                 continue;
             }
@@ -45,7 +45,7 @@ public class Main {
                         Chauffeur chauffeurForReservation = Chauffeur.creationChauffeur(scanner, chauffeurs);
                         Trajet trajet = Trajet.createTrajet(scanner, reservationBus, trajets);
 
-                        trajet = new Trajet(trajet.getDepartureCity(), trajet.getArrivalCity(), trajet.getDepartureKilometer(), trajet.getArrivalKilometer(), reservationBus);
+                        trajet = new Trajet(trajet.getVilleDepart(), trajet.getVilleArriver(), trajet.getKillometrageDepart(), trajet.getKilometrageArriver(), reservationBus);
                         reservationBus.setChauffeur(chauffeurForReservation);
                         reservationBus.setTrajet(trajet);
 
@@ -90,7 +90,7 @@ public class Main {
                             }
                         }
                         if (!trajetFound) {
-                            throw new NoTrajetFoundException("Aucun trajet trouvé.");
+                            throw new TrajetIntrouvableException("Aucun trajet trouvé.");
                         }
                         break;
 
@@ -101,7 +101,7 @@ public class Main {
                         System.out.println("Option invalide. Veuillez choisir une option entre 1 et 4.");
                         break;
                 }
-            } catch (NoTrajetFoundException e) {
+            } catch (TrajetIntrouvableException e) {
                 System.out.println(e.getMessage());
             }
         } while (option != 4);

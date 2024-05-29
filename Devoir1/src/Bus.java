@@ -58,14 +58,14 @@ public class Bus {
         System.out.println("\033[32m" + "==> Couleur : " + couleur + "\033[0m");
     }
 
-    public static @NotNull Bus creationBus(@NotNull Scanner scanner, Bus[] buses) throws Exceptions.InvalidBusNumberException {
+    public static @NotNull Bus creationBus(@NotNull Scanner scanner, Bus[] buses) throws Exceptions.immatriculationInvalideException {
         System.out.println("Entrez les informations pour la réservation d’un bus :");
         System.out.print("Numéro d'immatriculation du bus : ");
         String busNumber = scanner.nextLine();
 
         if (!busNumber.matches("[A-Za-z0-9]{6}")) {
             System.out.println("Le numéro d'immatriculation n'est pas valide ! ");
-            throw new Exceptions.InvalidBusNumberException("Format invalide : " + busNumber + " - Veuiller entrer un numéro d'immatriculation de 6 charactères.");
+            throw new Exceptions.immatriculationInvalideException("Format invalide : " + busNumber + " - Veuiller entrer un numéro d'immatriculation de 6 charactères.");
         }
 
         Bus busForReservation = null;
@@ -107,12 +107,12 @@ public class Bus {
                     String input = scanner.nextLine();
                     tankCapacity = Double.parseDouble(input);
                     if (tankCapacity <= 0) {
-                        throw new Exceptions.InvalidCapacityException("Erreur : La capacité du réservoir doit être un chiffre positif.");
+                        throw new Exceptions.CapaciteReservoirInvalideException("Erreur : La capacité du réservoir doit être un chiffre positif.");
                     }
                     break;
                 } catch (NumberFormatException e) {
                     System.out.println("\033[31mErreur : Veuillez entrer un chiffre pour la capacité du réservoir en Litre.\033[0m");
-                } catch (Exceptions.InvalidCapacityException e) {
+                } catch (Exceptions.CapaciteReservoirInvalideException e) {
                     System.out.println("\033[31m" + e.getMessage() + "\033[0m");
                 }
             }
@@ -127,12 +127,12 @@ public class Bus {
                 String input = scanner.nextLine().trim();
                 passengerCount = Integer.parseInt(input);
                 if (passengerCount <= 0) {
-                    throw new Exceptions.InvalidPassengerCountException("Erreur : Le nombre de passagers doit être un entier positif.");
+                    throw new Exceptions.PassagerNbrInvalideException("Erreur : Le nombre de passagers doit être un entier positif.");
                 }
                 break;
             } catch (NumberFormatException e) {
                 System.out.println("\033[31mErreur : Veuillez entrer un entier pour le nombre de passagers.\033[0m");
-            } catch (Exceptions.InvalidPassengerCountException e) {
+            } catch (Exceptions.PassagerNbrInvalideException e) {
                 System.out.println("\033[31m" + e.getMessage() + "\033[0m");
             }
         }
@@ -146,10 +146,10 @@ public class Bus {
             try {
                 color = scanner.nextLine().trim();
                 if (!color.matches("^[a-zA-Z]*$")) {
-                    throw new Exceptions.InvalidColorException("Erreur : Veuillez entrer une couleur en lettres uniquement.");
+                    throw new Exceptions.CouleurInvalideException("Erreur : Veuillez entrer une couleur en lettres uniquement.");
                 }
                 break;
-            } catch (Exceptions.InvalidColorException e) {
+            } catch (Exceptions.CouleurInvalideException e) {
                 System.out.println("\033[31m" + e.getMessage() + "\033[0m");
             }
         }
@@ -162,7 +162,7 @@ public class Bus {
             try {
                 reservationBus = Bus.creationBus(scanner, buses);
                 break;
-            } catch (Exceptions.InvalidBusNumberException e) {
+            } catch (Exceptions.immatriculationInvalideException e) {
                 System.out.println("\033[31m" + e.getMessage() + "\033[0m");
             }
         }
