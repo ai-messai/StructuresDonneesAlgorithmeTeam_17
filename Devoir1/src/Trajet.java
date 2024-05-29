@@ -2,7 +2,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import org.jetbrains.annotations.NotNull;
-import src.Exceptions;
+import ExceptionsFl.Exceptions;
 
 public class Trajet {
     private String villeDepart;

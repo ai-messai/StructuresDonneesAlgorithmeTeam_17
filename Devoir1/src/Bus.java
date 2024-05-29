@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
-import ExceptionsFl.Exceptions;
 import org.jetbrains.annotations.NotNull;
+import ExceptionsFl.Exceptions;
 
 
 public class Bus {
@@ -100,23 +100,23 @@ public class Bus {
 
     public static double validateTankCapacity(@NotNull Scanner scanner) {
 
-            double tankCapacity = 0;
-            while (true) {
-                try {
-                    System.out.print("Capacité du réservoir : ");
-                    String input = scanner.nextLine();
-                    tankCapacity = Double.parseDouble(input);
-                    if (tankCapacity <= 0) {
-                        throw new Exceptions.CapaciteReservoirInvalideException("Erreur : La capacité du réservoir doit être un chiffre positif.");
-                    }
-                    break;
-                } catch (NumberFormatException e) {
-                    System.out.println("\033[31mErreur : Veuillez entrer un chiffre pour la capacité du réservoir en Litre.\033[0m");
-                } catch (Exceptions.CapaciteReservoirInvalideException e) {
-                    System.out.println("\033[31m" + e.getMessage() + "\033[0m");
+        double tankCapacity = 0;
+        while (true) {
+            try {
+                System.out.print("Capacité du réservoir : ");
+                String input = scanner.nextLine();
+                tankCapacity = Double.parseDouble(input);
+                if (tankCapacity <= 0) {
+                    throw new Exceptions.CapaciteReservoirInvalideException("Erreur : La capacité du réservoir doit être un chiffre positif.");
                 }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("\033[31mErreur : Veuillez entrer un chiffre pour la capacité du réservoir en Litre.\033[0m");
+            } catch (Exceptions.CapaciteReservoirInvalideException e) {
+                System.out.println("\033[31m" + e.getMessage() + "\033[0m");
             }
-            return tankCapacity;
+        }
+        return tankCapacity;
     }
 
     public static int validatePassengerCount(@org.jetbrains.annotations.NotNull Scanner scanner) {
