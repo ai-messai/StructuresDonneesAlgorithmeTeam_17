@@ -1,17 +1,21 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.jetbrains.annotations.NotNull;
+import src.Exceptions;
+
 public class Trajet {
-    private String departureCity;
-    private String arrivalCity;
-    private double departureKilometer;
-    private double arrivalKilometer;
+    private String villeDepart;
+    private String VilleArriver;
+    private double killometrageDepart;
+    private double kilometrageArriver;
     private Bus bus;
 
-    public Trajet(String departureCity, String arrivalCity, double departureKilometer, double arrivalKilometer, Bus bus) {
-        this.departureCity = departureCity;
-        this.arrivalCity = arrivalCity;
-        this.departureKilometer = departureKilometer;
-        this.arrivalKilometer = arrivalKilometer;
+    public Trajet(String villeDepart, String VilleArriver, double killometrageDepart, double kilometrageArriver, Bus bus) {
+        this.villeDepart = villeDepart;
+        this.VilleArriver = VilleArriver;
+        this.killometrageDepart = killometrageDepart;
+        this.kilometrageArriver = kilometrageArriver;
         this.bus = bus;
     }
 
@@ -19,34 +23,85 @@ public class Trajet {
         return this.bus;
     }
 
-    public String getDepartureCity() {
-        return this.departureCity;
+    public String getVilleDepart() {
+        return this.villeDepart;
     }
 
-    public String getArrivalCity() {
-        return this.arrivalCity;
+    public String getVilleArriver() {
+        return this.VilleArriver;
     }
 
-    public double getDepartureKilometer() {
-        return this.departureKilometer;
+    public double getKillometrageDepart() {
+        return this.killometrageDepart;
     }
 
-    public double getArrivalKilometer() {
-        return this.arrivalKilometer;
+    public double getKilometrageArriver() {
+        return this.kilometrageArriver;
     }
 
-    public static Trajet createTrajet(Scanner scanner, Bus bus, Trajet[] trajets) {
-        System.out.print("Ville de départ : ");
-        String departureCity = scanner.nextLine();
-        System.out.print("Ville d'arrivée : ");
-        String arrivalCity = scanner.nextLine();
-        System.out.print("Kilométrage au départ : ");
-        double departureKilometer = scanner.nextDouble();
-        System.out.print("Kilométrage à l'arrivée : ");
-        double arrivalKilometer = scanner.nextDouble();
-        scanner.nextLine(); // Pour consommer le '\n' laissé par nextDouble()
+    public static @NotNull Trajet createTrajet(@NotNull Scanner scanner, Bus bus, Trajet[] trajets) {
+        String villeDepart = "";
+        String villeArriver = "";
+        double kilometrageDepart = 0;
+        double kilometrageArriver = 0;
 
-        Trajet trajet = new Trajet(departureCity, arrivalCity, departureKilometer, arrivalKilometer, bus);
+        while (true) {
+            try {
+                System.out.print("Ville de départ : ");
+                villeDepart = scanner.nextLine();
+                if (!villeDepart.matches("[a-zA-Z]+")) {
+                    throw new Exceptions.InvalideNomDeVilleException("Erreur : Le nom de la ville de départ doit être composé uniquement de lettres.");
+                }
+
+                System.out.print("Ville d'arrivée : ");
+                villeArriver = scanner.nextLine();
+                if (!villeArriver.matches("[a-zA-Z]+")) {
+                    throw new Exceptions.InvalideNomDeVilleException("Erreur : Le nom de la ville d'arrivée doit être composé uniquement de lettres.");
+                }
+
+                if (villeDepart.equalsIgnoreCase(villeArriver)) {
+                    throw new Exceptions.InvalideVilleException("Erreur : La ville de d��part ne doit pas être la même que la ville d'arrivée.");
+                }
+                break;
+            } catch (Exceptions.InvalideVilleException | Exceptions.InvalideNomDeVilleException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        while (true) {
+            try {
+                System.out.print("Kilométrage au départ : ");
+                try {
+                    kilometrageDepart = scanner.nextDouble();
+                } catch (InputMismatchException e) {
+                    throw new Exceptions.InvalidwKmException("Erreur : Le kilometrage de depart doit etre un nombre.");
+                }
+                if (kilometrageDepart < 0) {
+                    throw new Exceptions.InvalidwKmException("Erreur : Le kilometrage de depart doit etre un nombre positif.");
+                }
+
+                System.out.print("Kilometrage à l'arriver : ");
+                try {
+                    kilometrageArriver = scanner.nextDouble();
+                } catch (InputMismatchException e) {
+                    throw new Exceptions.InvalidwKmException("Erreur : Le kilometrage à l'arriver doit etre un nombre.");
+                }
+                if (kilometrageArriver < 0) {
+                    throw new Exceptions.InvalidwKmException("Erreur : Le kilometrage à l'arriver doit etre un nombre positif.");
+                }
+
+                if (kilometrageArriver <= kilometrageDepart) {
+                    throw new Exceptions.InvalideKmException("Erreur : Le kilometrage à l'arriver ne doit pas être plus petit que le kilométrage de depart.");
+                }
+                break;
+            } catch (Exceptions.InvalideKmException | Exceptions.InvalidwKmException e) {
+                System.out.println(e.getMessage());
+                scanner.nextLine(); // clear the input
+            }
+        }
+
+        scanner.nextLine();
+        Trajet trajet = new Trajet(villeDepart, villeArriver, kilometrageDepart, kilometrageArriver, bus);
 
         // Ajouter le trajet au tableau de trajets
         for (int i = 0; i < trajets.length; i++) {
@@ -58,11 +113,13 @@ public class Trajet {
         return trajet;
     }
 
+
+
     public void displayCharacteristic() {
-        System.out.println("Departure City: " + departureCity);
-        System.out.println("Arrival City: " + arrivalCity);
-        System.out.println("Departure Kilometer: " + departureKilometer);
-        System.out.println("Arrival Kilometer: " + arrivalKilometer);
+        System.out.println("Ville de depart: " + villeDepart);
+        System.out.println("Ville d’arrivee: " + VilleArriver);
+        System.out.println("Kilométrage au départ: " + killometrageDepart);
+        System.out.println("kilométrage à l’arrivée : " + kilometrageArriver);
         System.out.println("Bus Characteristics: ");
     }
 }

@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -68,18 +67,14 @@ public class Chauffeur {
             System.out.println("\033[31m" + "Aucun chauffeur trouvé avec ce nom." + "\033[0m");
             System.out.println("\033[32m" + "Création d'un nouveau Chauffeur." + "\033[0m");
 
-            System.out.print("Prénom : ");
             String prenomChauffeur = validationPrenom(scanner);
 
-            System.out.print("Âge : ");
-            int age = validateAge(scanner);
+            int age = validationAge(scanner);
 
-            System.out.print("Année d'embauche : ");
-            int hiringYear = validateHiringYear(scanner);
+            int hiringYear = validationAnneeEmbauche(scanner);
             scanner.nextLine();
 
-            System.out.print("Adresse : ");
-            String address = validateAddress(scanner);
+            String address = validationAddresse(scanner);
 
             reservationChauffeur = new Chauffeur(prenomChauffeur, nomChauffeur, age, hiringYear, address);
 
@@ -103,10 +98,10 @@ public class Chauffeur {
             try {
                 nomChauffeur = scanner.nextLine().trim();
                 if (!nomChauffeur.matches("^[a-zA-Z]*$")) {
-                    throw new Exceptions.InvalidDriverNameException("Erreur : Veuillez entrer un nom en lettres uniquement.");
+                    throw new Exceptions.NomInvalideException("Erreur : Veuillez entrer un nom en lettres uniquement.");
                 }
                 break;
-            } catch (Exceptions.InvalidDriverNameException e) {
+            } catch (Exceptions.NomInvalideException e) {
                 System.out.println("\033[31m" + e.getMessage() + "\033[0m");
             }
         }
@@ -120,65 +115,65 @@ public class Chauffeur {
             try {
                 prenomChauffeur = scanner.nextLine().trim();
                 if (!prenomChauffeur.matches("^[a-zA-Z]*$")) {
-                    throw new Exceptions.InvalidDriverNameException("Erreur : Veuillez entrer un prenom en lettres uniquement.");
+                    throw new Exceptions.NomInvalideException("Erreur : Veuillez entrer un prenom en lettres uniquement.");
                 }
                 break;
-            } catch (Exceptions.InvalidDriverNameException e) {
+            } catch (Exceptions.NomInvalideException e) {
                 System.out.println("\033[31m" + e.getMessage() + "\033[0m");
             }
         }
         return prenomChauffeur;
     }
 
-    public static int validateAge(Scanner scanner) {
+    public static int validationAge(@NotNull Scanner scanner) {
         int age = 0;
         while (true) {
             try {
                 System.out.print("Âge : ");
                 age = scanner.nextInt();
                 if (age <= 0) {
-                    throw new Exceptions.InvalidAgeException("Erreur : L'âge doit être un entier positif.");
+                    throw new Exceptions.AgeInvalideException("Erreur : L'âge doit être un entier positif.");
                 }
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Erreur : Veuillez entrer un entier pour l'âge.");
                 scanner.next(); // to consume the invalid token
-            } catch (Exceptions.InvalidAgeException e) {
+            } catch (Exceptions.AgeInvalideException e) {
                 System.out.println(e.getMessage());
             }
         }
         return age;
     }
 
-    public static int validateHiringYear(Scanner scanner) {
-        int hiringYear = 0;
+    public static int validationAnneeEmbauche(@NotNull Scanner scanner) {
+        int anneeEmbauche = 0;
         while (true) {
             try {
                 System.out.print("Année d'embauche : ");
-                hiringYear = scanner.nextInt();
-                if (hiringYear < 1900 || hiringYear > Calendar.getInstance().get(Calendar.YEAR)) {
-                    throw new Exceptions.InvalidHiringYearException("Erreur : L'année d'embauche doit être entre 1900 et l'année courante.");
+                anneeEmbauche = scanner.nextInt();
+                if (anneeEmbauche < 1900 || anneeEmbauche > Calendar.getInstance().get(Calendar.YEAR)) {
+                    throw new Exceptions.InvalideAnneeEmbaucheException("Erreur : L'année d'embauche doit être entre 1900 et l'année courante.");
                 }
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Erreur : Veuillez entrer un entier pour l'année d'embauche.");
                 scanner.next(); // to consume the invalid token
-            } catch (Exceptions.InvalidHiringYearException e) {
+            } catch (Exceptions.InvalideAnneeEmbaucheException e) {
                 System.out.println(e.getMessage());
             }
         }
-        return hiringYear;
+        return anneeEmbauche;
     }
-    public static String validateAddress(Scanner scanner) {
+    public static String validationAddresse(@NotNull Scanner scanner) {
         String address = "";
         while (true) {
             System.out.print("Adresse : ");
             try {
                 address = scanner.nextLine().trim();
                 if (!address.matches("^\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)\\s+[A-Za-z]\\d[A-Za-z]\\s?\\d[A-Za-z]\\d$")) {
-                    throw new Exceptions.InvalidAddressException("Erreur : Veuillez entrer une adresse valide.\nExemple: 123 rue rue Quebec A1A 1A1");                }
+                    throw new Exceptions.AddresseInvalideException("Erreur : Veuillez entrer une adresse valide.\nExemple: 123 rue rue Quebec A1A 1A1");                }
                 break;
-            } catch (Exceptions.InvalidAddressException e) {
+            } catch (Exceptions.AddresseInvalideException e) {
                 System.out.println(e.getMessage());
             }
         }
