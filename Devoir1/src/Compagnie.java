@@ -16,10 +16,10 @@ public class Compagnie {
         System.out.println("\033[33m" + "-------------------------" + "\033[0m");
 
         System.out.println("\n\033[34m" + "Détails du bus :" + "\033[0m");
-        System.out.println("Numéro d'immatriculation : " + busForReservation.getRegistrationNumber());
-        System.out.println("Capacité du réservoir : " + busForReservation.getTankCapacity());
-        System.out.println("Nombre de passagers : " + busForReservation.getPassengerCount());
-        System.out.println("Couleur : " + busForReservation.getColor());
+        System.out.println("Numéro d'immatriculation : " + busForReservation.getNumImmatriculation());
+        System.out.println("Capacité du réservoir : " + busForReservation.getCapaciteReservoir());
+        System.out.println("Nombre de passagers : " + busForReservation.getNbrPassager());
+        System.out.println("Couleur : " + busForReservation.getCouleur());
 
         System.out.println("\n\033[34m" + "Détails du chauffeur :" + "\033[0m");
         System.out.println("Prénom : " + chauffeurForReservation.getFirstName());
