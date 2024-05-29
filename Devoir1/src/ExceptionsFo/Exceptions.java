@@ -1,4 +1,4 @@
-package src;
+package ExceptionsFo;
 
 public class Exceptions {
 

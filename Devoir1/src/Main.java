@@ -1,5 +1,5 @@
-import src.Exceptions.InputInvalideException;
-import src.Exceptions.TrajetIntrouvableException;
+import ExceptionsFo.Exceptions.InputInvalideException;
+import ExceptionsFo.Exceptions.TrajetIntrouvableException;
 import java.util.Scanner;
 
 public class Main {
