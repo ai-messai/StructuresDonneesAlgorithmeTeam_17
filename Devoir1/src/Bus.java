@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
+import ExceptionsFl.Exceptions;
 import org.jetbrains.annotations.NotNull;
-import src.Exceptions;
 
 
 public class Bus {

@@ -1,5 +1,5 @@
-import src.Exceptions.InputInvalideException;
-import src.Exceptions.TrajetIntrouvableException;
+import ExceptionsFl.Exceptions;
+import ExceptionsFl.Exceptions.NoTrajetFoundException;
 import java.util.Scanner;
 
 public class Main {
@@ -23,14 +23,15 @@ public class Main {
                 System.out.println("######################################################################");
                 System.out.print("# Choisissez une option : ");
 
-                while (!scanner.hasNextInt()) {
+                if (!scanner.hasNextInt()) {
                     scanner.next();
-                    throw new InputInvalideException("Erreur : Veuillez entrer un chiffre entre 1 et 4.");
+                    throw new Exceptions.InvalidInputException("Erreur : Veuillez entrer un chiffre entre 1 et 4.");
                 }
                 option = scanner.nextInt();
 
-            } catch (InputInvalideException e) {
+            } catch (Exceptions.InvalidInputException e) {
                 System.out.println(e.getMessage());
+                scanner.nextLine(); // consume the invalid input
                 continue;
             }
 
@@ -45,13 +46,14 @@ public class Main {
                         Chauffeur chauffeurForReservation = Chauffeur.creationChauffeur(scanner, chauffeurs);
                         Trajet trajet = Trajet.createTrajet(scanner, reservationBus, trajets);
 
-                        trajet = new Trajet(trajet.getVilleDepart(), trajet.getVilleArriver(), trajet.getKillometrageDepart(), trajet.getKilometrageArriver(), reservationBus);
+                        trajet = new Trajet(trajet.getDepartureCity(), trajet.getArrivalCity(), trajet.getDepartureKilometer(), trajet.getArrivalKilometer(), reservationBus);
                         reservationBus.setChauffeur(chauffeurForReservation);
                         reservationBus.setTrajet(trajet);
 
                         Compagnie compagnie = new Compagnie();
                         compagnie.printReservationDetails(reservationBus, chauffeurForReservation, trajet);
                         break;
+
                     case 2:
                         System.out.print("Veuillez entrer le nom du chauffeur afin de trouver tout les bus qu'il a conduit :");
                         String chauffeurName = scanner.nextLine();
@@ -70,6 +72,7 @@ public class Main {
                             System.out.println("Total de bus conduit par " + chauffeurName + " : " + busCount);
                         }
                         break;
+
                     case 3:
                         int nbrTrajet = 1;
                         boolean trajetFound = false;
@@ -90,7 +93,7 @@ public class Main {
                             }
                         }
                         if (!trajetFound) {
-                            throw new TrajetIntrouvableException("Aucun trajet trouvé.");
+                            throw new NoTrajetFoundException("Aucun trajet trouvé.");
                         }
                         break;
 
@@ -101,7 +104,7 @@ public class Main {
                         System.out.println("Option invalide. Veuillez choisir une option entre 1 et 4.");
                         break;
                 }
-            } catch (TrajetIntrouvableException e) {
+            } catch (NoTrajetFoundException e) {
                 System.out.println(e.getMessage());
             }
         } while (option != 4);
