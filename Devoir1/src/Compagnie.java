@@ -23,10 +23,10 @@ public class Compagnie {
 
         System.out.println("\n\033[34m" + "Détails du chauffeur :" + "\033[0m");
         System.out.println("Prénom : " + chauffeurForReservation.getFirstName());
-        System.out.println("Nom : " + chauffeurForReservation.getLastName());
+        System.out.println("Nom : " + chauffeurForReservation.getNom());
         System.out.println("Âge : " + chauffeurForReservation.getAge());
-        System.out.println("Année d'embauche : " + chauffeurForReservation.getHiringYear());
-        System.out.println("Adresse : " + chauffeurForReservation.getAddress());
+        System.out.println("Année d'embauche : " + chauffeurForReservation.getAnneeEmbauche());
+        System.out.println("Adresse : " + chauffeurForReservation.getAddresse());
         System.out.println("ID : " + chauffeurForReservation.getId());
 
         System.out.println("\n\033[34m" + "Détails du trajet :" + "\033[0m");

@@ -1,7 +1,6 @@
 import src.Exceptions.InvalidInputException;
 import src.Exceptions.NoTrajetFoundException;
 import java.util.Scanner;
-import src.Exceptions;
 
 public class Main {
     public static void main(String[] args) {
@@ -34,7 +33,7 @@ public class Main {
                 System.out.println(e.getMessage());
                 continue;
             }
-            
+
             scanner.nextLine();
 
             try {
@@ -43,7 +42,7 @@ public class Main {
 
                         Bus reservationBus = Bus.createBusWithValidation(scanner, buses);
 
-                        Chauffeur chauffeurForReservation = Chauffeur.findOrCreateChauffeur(scanner, chauffeurs);
+                        Chauffeur chauffeurForReservation = Chauffeur.creationChauffeur(scanner, chauffeurs);
                         Trajet trajet = Trajet.createTrajet(scanner, reservationBus, trajets);
 
                         trajet = new Trajet(trajet.getDepartureCity(), trajet.getArrivalCity(), trajet.getDepartureKilometer(), trajet.getArrivalKilometer(), reservationBus);
@@ -58,7 +57,7 @@ public class Main {
                         String chauffeurName = scanner.nextLine();
                         int busCount = 0;
                         for (Bus b : buses) {
-                            if (b != null && b.getChauffeur() != null && b.getChauffeur().getLastName().equals(chauffeurName)) {
+                            if (b != null && b.getChauffeur() != null && b.getChauffeur().getNom().equals(chauffeurName)) {
                                 busCount++;
                                 System.out.println("Bus " + busCount + " conduit par " + chauffeurName + " :");
                                 b.affichageCarachteristique();
