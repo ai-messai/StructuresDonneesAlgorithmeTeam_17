@@ -18,7 +18,7 @@ public class Trajet {
         this.kilometrageArriver = kilometrageArriver;
         this.bus = bus;
     }
-
+ 
     public Bus getBus() {
         return this.bus;
     }
